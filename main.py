@@ -30,3 +30,19 @@ class Expense(Transaction):
     def __init__(self, date, amount, category, description):
         super().__init__(date, amount, category, description, 'expense')# inheriting attributes from transaction class(parent class)
 
+def menu():
+
+    while True:
+        print("\n")
+        print (" BUDGET TRACKER MENU")
+        print("\n")
+        print("1) Add income")
+        print("2) Add expense")
+        print("3) List transactions")
+        print("4) Filter transactions")
+        print("5) Show summary")
+        print("0) Exit")
+        print("\n")
+        break
+
+print(menu())
