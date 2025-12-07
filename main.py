@@ -277,7 +277,7 @@ def main():
 
         elif choice == '0':
             print("\n")
-            print("Thank you for using Budget Tracker! Goodbye! 👋")
+            print("Thank you for using Budget Tracker! Goodbye! ")
             print("\n")
             break
 
