@@ -251,6 +251,12 @@ def main():
         elif choice == '5':
             tracker.show_summary()
 
+        elif choice == '0':
+            print("\n")
+            print("Thank you for using Budget Tracker! Goodbye! 👋")
+            print("\n")
+            break
+
 
 
 
