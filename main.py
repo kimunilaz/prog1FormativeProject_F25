@@ -1,6 +1,6 @@
 
 
-#from datetime import datetime
+from datetime import datetime
 
 
 # Base Transaction class
@@ -185,6 +185,30 @@ class BudgetTracker:
                 print(f"  {category.capitalize():20} ${amount:>10.2f}")
 
 
+def validate_amount(prompt):
+    #Validate numeric input for amount
+    while True:
+        try:
+            amount = input(prompt)
+            amount_float = float(amount)
+            if amount_float <= 0:
+                print("Amount must be positive. Try again.")
+                continue
+            return amount_float
+        except ValueError:
+            print("Invalid amount. Please enter a number.")
+
+
+def validate_date(prompt):
+    #Validate date format YYYY-MM-DD
+    while True:
+        date = input(prompt)
+        try:
+            datetime.strptime(date, '%Y-%m-%d')
+            return date
+        except ValueError:
+            print("Invalid date format. Use YYYY-MM-DD (e.g., 2025-01-15)")
+
 
 
 def main():
@@ -208,7 +232,7 @@ def main():
 
         choice = input("Select an option: ").strip()
         if choice == "1":
-            date = (input("Enter a date: "))
+            date = (input("Enter a date YYYY-MM-DD: "))
             amount = input("Enter a amount: ").strip()
             category = input("Enter a category: ").strip()
             description = input("Enter a description: ").strip()
@@ -217,7 +241,7 @@ def main():
 
 
         elif choice == "2":
-            date = input("Enter a date: ").strip()
+            date = input("Enter a date 'YYYY-MM-DD': ").strip()
             amount = input("Enter a amount: ").strip()
             category = input("Enter a category: ").strip()
             description = input("Enter a description: ").strip()
@@ -260,7 +284,5 @@ def main():
 
 
 
-
- # TESTING
 if __name__ == "__main__":
     main()
