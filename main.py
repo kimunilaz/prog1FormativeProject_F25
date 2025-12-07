@@ -108,7 +108,84 @@ class BudgetTracker:
 
         for transaction in filtered:
             print(transaction)
-        print("=" * 90)
+
+    #Display budget summary with totals
+    def show_summary(self):
+
+        # Check if there are any transactions
+        if not self.transactions:
+            print("\nNo transactions to summarize.")
+            return
+
+        # Calculate total income
+        total_income = 0
+        for transaction in self.transactions:
+            if transaction.type == 'income':
+                total_income = total_income + transaction.amount
+
+        # Calculate total expenses
+        total_expenses = 0
+        for transaction in self.transactions:
+            if transaction.type == 'expense':
+                total_expenses = total_expenses + transaction.amount
+
+        # Calculate balance (income - expenses)
+        balance = total_income - total_expenses
+
+        # Calculate per-category totals
+        category_totals = {}
+        for transaction in self.transactions:
+            # Create a key like "income:salary" or "expense:food"
+            key = transaction.type + ":" + transaction.category
+
+            # If this category exists, add to it. If not, start at 0
+            if key in category_totals:
+                category_totals[key] = category_totals[key] + transaction.amount
+            else:
+                category_totals[key] = transaction.amount
+
+        # Display the main summary
+        print("\n")
+        print("BUDGET SUMMARY")
+        print("\n")
+        print(f"Total Income:    ${total_income:>10.2f}")
+        print(f"Total Expenses:  ${total_expenses:>10.2f}")
+        print("\n")
+        print(f"Balance:         ${balance:>10.2f}")
+
+
+        print("\nPER-CATEGORY BREAKDOWN:")
+        print("\n")
+
+        # Separate income and expense categories
+        income_categories = {}
+        expense_categories = {}
+
+        for key, amount in category_totals.items():
+            # Split "income:salary" into type and category
+            parts = key.split(':')
+            transaction_type = parts[0]
+            category_name = parts[1]
+
+            if transaction_type == 'income':
+                income_categories[category_name] = amount
+            else:
+                expense_categories[category_name] = amount
+
+        # Display income by category
+        if len(income_categories) > 0:
+            print("\nIncome by Category:")
+            for category, amount in sorted(income_categories.items()):
+                print(f"  {category.capitalize():20} ${amount:>10.2f}")
+
+        # Display expenses by category
+        if len(expense_categories) > 0:
+            print("\nExpenses by Category:")
+            for category, amount in sorted(expense_categories.items()):
+                print(f"  {category.capitalize():20} ${amount:>10.2f}")
+
+
+
 
 def main():
     tracker = BudgetTracker() # create an object to store transactions
@@ -121,8 +198,8 @@ def main():
         print("2) Add expense")
         print("3) List transactions")
 
-        #print("4) Filter transactions")
-        #print("5) Show summary")
+        print("4) Filter transactions")
+        print("5) Show summary")
         #print("0) Exit")
 
         print("\n")
@@ -170,6 +247,9 @@ def main():
                 tracker.filter_transactions('month', filter_val)
             else:
                 print(" Invalid filter option.")
+
+        elif choice == '5':
+            tracker.show_summary()
 
 
 
