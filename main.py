@@ -224,7 +224,7 @@ def main():
 
         print("4) Filter transactions")
         print("5) Show summary")
-        #print("0) Exit")
+        print("0) Exit")
 
         print("\n")
 
