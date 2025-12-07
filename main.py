@@ -150,6 +150,28 @@ def main():
         elif choice == '3':
             tracker.list_transactions()
 
+        elif choice == '4':
+            print("\n--- FILTER TRANSACTIONS ---")
+            print("Filter by:")
+            print("  1) Type (income/expense)")
+            print("  2) Category")
+            print("  3) Month (YYYY-MM)")
+
+            filter_choice = input("Choose filter type: ").strip()
+
+            if filter_choice == '1':
+                filter_val = input("Enter type (income/expense): ").strip()
+                tracker.filter_transactions('type', filter_val)
+            elif filter_choice == '2':
+                filter_val = input("Enter category: ").strip()
+                tracker.filter_transactions('category', filter_val)
+            elif filter_choice == '3':
+                filter_val = input("Enter month (YYYY-MM, e.g., 2025-10): ").strip()
+                tracker.filter_transactions('month', filter_val)
+            else:
+                print(" Invalid filter option.")
+
+
 
 
 
