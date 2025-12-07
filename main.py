@@ -1,20 +1,20 @@
 
 
-from datetime import datetime
+#from datetime import datetime
 
 
 # Base Transaction class
 class Transaction:
-    def __init__(self, date, amount, category, description, type):
+    def __init__(self, date, amount, category, description, tyype):
         self.date = date
         self.amount = float(amount)
         self.category = category.lower().strip()
         self.description = description
-        self.type = type  # 'income' or 'expense'
+        self.type = tyype  # 'income' or 'expense'
 
 #a method to enable printing an object
     def __str__(self):
-        return f"{self.date} | {self.type.capitalize():8} | ${self.amount:>..2f} | {self.category:15} | {self.description}"
+        return f"{self.date} | {self.type.capitalize():8} | ${self.amount:>8.2f} | {self.category:15} | {self.description}"
 
 #Extract YYYY-MM format from date
     def get_month(self):
@@ -51,8 +51,67 @@ class BudgetTracker:
         self.transactions.append(expense)
         print(f"✓ Expense of ${amount} added successfully!")
 
-def menu():
-    Tracker = BudgetTracker() # create an object to store transactions
+    def list_transactions(self): #display transactions
+
+        if not self.transactions:
+            print("\nNo transactions recorded yet.")
+            return
+
+        print("\n")
+        print("ALL TRANSACTIONS")
+        print("\n")
+        print(f"{'Date':10} | {'Type':8} | {'Amount':>8} | {'Category':15} | Description")
+        print("\n")
+
+        for t in self.transactions:
+            print(t)
+
+    def filter_transactions(self, filter_type=None, filter_value=None):
+        """Filter transactions by type, category, or month"""
+        # Check if there are any transactions
+        if not self.transactions:
+            print("\nNo transactions to filter.")
+            return
+
+        # Create empty list to store filtered results
+        filtered = []
+
+        # Filter by type (income or expense)
+        if filter_type == 'type':
+            for transaction in self.transactions:
+                if transaction.type == filter_value.lower():
+                    filtered.append(transaction)
+
+        # Filter by category
+        elif filter_type == 'category':
+            for transaction in self.transactions:
+                if transaction.category == filter_value.lower().strip():
+                    filtered.append(transaction)
+
+        # Filter by month
+        elif filter_type == 'month':
+            for transaction in self.transactions:
+                if transaction.get_month() == filter_value:
+                    filtered.append(transaction)
+
+        # Check if we found any matching transactions
+        if len(filtered) == 0:
+            print(f"\nNo transactions found matching the filter.")
+            return
+
+        # Display the filtered transactions
+        print("\n")
+        print(f"FILTERED TRANSACTIONS ({filter_type}: {filter_value})")
+        print("\n")
+        print(f"{'Date':10} | {'Type':8} | {'Amount':>8} | {'Category':15} | Description")
+
+
+        for transaction in filtered:
+            print(transaction)
+        print("=" * 90)
+
+def main():
+    tracker = BudgetTracker() # create an object to store transactions
 
     while True:
         print("\n")
@@ -60,11 +119,15 @@ def menu():
         print("\n")
         print("1) Add income")
         print("2) Add expense")
-        #print("3) List transactions")
+        print("3) List transactions")
+
         #print("4) Filter transactions")
         #print("5) Show summary")
         #print("0) Exit")
+
         print("\n")
+
+
 
         choice = input("Select an option: ").strip()
         if choice == "1":
@@ -73,19 +136,23 @@ def menu():
             category = input("Enter a category: ").strip()
             description = input("Enter a description: ").strip()
 
-            Tracker.add_income(date, amount, category, description)
+            tracker.add_income(date, amount, category, description)
 
 
-        if choice == "2":
+        elif choice == "2":
             date = input("Enter a date: ").strip()
             amount = input("Enter a amount: ").strip()
             category = input("Enter a category: ").strip()
             description = input("Enter a description: ").strip()
 
-            Tracker.add_expense(date, amount, category, description)
+            tracker.add_expense(date, amount, category, description)
+
+        elif choice == '3':
+            tracker.list_transactions()
 
 
 
-        break
+
  # TESTING
-print(menu())
+if __name__ == "__main__":
+    main()
